@@ -7,7 +7,7 @@
 class CustomRandomGenerator {
 public:
     CustomRandomGenerator(int64_t seed = 42) : Xn(seed) {
-        // Параметры линейного конгруэнтного метода
+        // РџР°СЂР°РјРµС‚СЂС‹ Р»РёРЅРµР№РЅРѕРіРѕ РєРѕРЅРіСЂСѓСЌРЅС‚РЅРѕРіРѕ РјРµС‚РѕРґР°
         a = 1664525;
         c = 1013904223;
         m = 4294967296;
@@ -15,7 +15,7 @@ public:
 
     int64_t getRandomNumber() {
         Xn = (a * Xn + c) % m;
-        return Xn % 70; // Ограничение диапазона от 0 до 70
+        return Xn % 70; // РћРіСЂР°РЅРёС‡РµРЅРёРµ РґРёР°РїР°Р·РѕРЅР° РѕС‚ 0 РґРѕ 70
     }
 
 private:
@@ -28,7 +28,7 @@ private:
 int main() {
     setlocale(LC_ALL, "Russian");
     const int num_samples = 100;
-    const int num_intervals = 7; // 7 интервалов по 10 чисел каждый
+    const int num_intervals = 7; // 7 РёРЅС‚РµСЂРІР°Р»РѕРІ РїРѕ 10 С‡РёСЃРµР» РєР°Р¶РґС‹Р№
 
     CustomRandomGenerator custom_generator;
 
@@ -45,11 +45,11 @@ int main() {
         std_random_numbers.push_back(random_number);
     }
 
-    // Создаем массивы для подсчета чисел в каждом интервале
-    std::vector<int> custom_interval_count(num_intervals, 0); // Для нашей реализации
-    std::vector<int> std_interval_count(num_intervals, 0);    // Для стандартного генератора
+    // РЎРѕР·РґР°РµРј РјР°СЃСЃРёРІС‹ РґР»СЏ РїРѕРґСЃС‡РµС‚Р° С‡РёСЃРµР» РІ РєР°Р¶РґРѕРј РёРЅС‚РµСЂРІР°Р»Рµ
+    std::vector<int> custom_interval_count(num_intervals, 0); // Р”Р»СЏ РЅР°С€РµР№ СЂРµР°Р»РёР·Р°С†РёРё
+    std::vector<int> std_interval_count(num_intervals, 0);    // Р”Р»СЏ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ РіРµРЅРµСЂР°С‚РѕСЂР°
 
-    // Подсчет чисел в каждом интервале и заполнение гистограмм
+    // РџРѕРґСЃС‡РµС‚ С‡РёСЃРµР» РІ РєР°Р¶РґРѕРј РёРЅС‚РµСЂРІР°Р»Рµ Рё Р·Р°РїРѕР»РЅРµРЅРёРµ РіРёСЃС‚РѕРіСЂР°РјРј
     for (unsigned int number : custom_random_numbers) {
         int interval = number / 10;
         if (interval < num_intervals) {
@@ -64,37 +64,37 @@ int main() {
         }
     }
 
-    // Отображаем результаты гистограмм
-    std::cout << "Гистограмма для нашей реализации:" << std::endl;
+    // РћС‚РѕР±СЂР°Р¶Р°РµРј СЂРµР·СѓР»СЊС‚Р°С‚С‹ РіРёСЃС‚РѕРіСЂР°РјРј
+    std::cout << "Р“РёСЃС‚РѕРіСЂР°РјРјР° РґР»СЏ РЅР°С€РµР№ СЂРµР°Р»РёР·Р°С†РёРё:" << std::endl;
     for (int i = 0; i < num_intervals; ++i) {
         std::cout << "[" << i * 10 << " - " << (i + 1) * 10 - 1 << "]: ";
         for (int j = 0; j < custom_interval_count[i]; ++j) {
             std::cout << "-";
         }
-        std::cout << " (Чисел: " << custom_interval_count[i] << ")" << std::endl;
+        std::cout << " (Р§РёСЃРµР»: " << custom_interval_count[i] << ")" << std::endl;
     }
 
-    std::cout << "Гистограмма для стандартного генератора:" << std::endl;
+    std::cout << "Р“РёСЃС‚РѕРіСЂР°РјРјР° РґР»СЏ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ РіРµРЅРµСЂР°С‚РѕСЂР°:" << std::endl;
     for (int i = 0; i < num_intervals; ++i) {
         std::cout << "[" << i * 10 << " - " << (i + 1) * 10 - 1 << "]: ";
         for (int j = 0; j < std_interval_count[i]; ++j) {
             std::cout << "-";
         }
-        std::cout << " (Чисел: " << std_interval_count[i] << ")" << std::endl;
+        std::cout << " (Р§РёСЃРµР»: " << std_interval_count[i] << ")" << std::endl;
     }
 
-    // Статистический метод: Тест хи-квадрат
+    // РЎС‚Р°С‚РёСЃС‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ: РўРµСЃС‚ С…Рё-РєРІР°РґСЂР°С‚
     double chi_square_custom = 0.0;
     double chi_square_std = 0.0;
 
     for (int i = 0; i < num_intervals; ++i) {
-        double expected = static_cast<double>(num_samples) / num_intervals; // Равномерное распределение по интервалам
+        double expected = static_cast<double>(num_samples) / num_intervals; // Р Р°РІРЅРѕРјРµСЂРЅРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїРѕ РёРЅС‚РµСЂРІР°Р»Р°Рј
         chi_square_custom += pow(custom_interval_count[i] - expected, 2) / expected;
         chi_square_std += pow(std_interval_count[i] - expected, 2) / expected;
     }
 
-    std::cout << "Значение хи-квадрат для нашей реализации: " << chi_square_custom << std::endl;
-    std::cout << "Значение хи-квадрат для стандартного генератора: " << chi_square_std << std::endl;
+    std::cout << "Р—РЅР°С‡РµРЅРёРµ С…Рё-РєРІР°РґСЂР°С‚ РґР»СЏ РЅР°С€РµР№ СЂРµР°Р»РёР·Р°С†РёРё: " << chi_square_custom << std::endl;
+    std::cout << "Р—РЅР°С‡РµРЅРёРµ С…Рё-РєРІР°РґСЂР°С‚ РґР»СЏ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ РіРµРЅРµСЂР°С‚РѕСЂР°: " << chi_square_std << std::endl;
 
     return 0;
 }
